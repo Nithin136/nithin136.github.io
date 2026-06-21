@@ -257,6 +257,44 @@
   .project-link:hover { color:var(--green); border-bottom-color:var(--green); }
   .project-link::before { content:'⌥ '; }
 
+  /* ── Forensics ── */
+  .forensics-intro { color:var(--text-muted); font-size:0.84rem; line-height:1.85; max-width:760px; margin-bottom:2.5rem; }
+  .forensics-meta { display:flex; flex-wrap:wrap; gap:1.5rem; margin-bottom:2.5rem; }
+  .forensics-meta-item { font-size:0.68rem; color:var(--text-dim); letter-spacing:1px; }
+  .forensics-meta-item b { color:var(--cyan); font-family:'Orbitron',monospace; font-size:0.78rem; display:block; margin-bottom:2px; }
+  .evidence-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(420px, 1fr)); gap:1.5rem; }
+  .evidence-card {
+    border:1px solid var(--border); padding:1.5rem;
+    background:rgba(77,159,255,0.02);
+    position:relative; overflow:hidden;
+  }
+  .evidence-card::before {
+    content:''; position:absolute; top:0; left:0; width:3px; height:100%;
+    background:var(--red);
+  }
+  .evidence-card.sev-high::before { background:var(--red); }
+  .evidence-card.sev-med::before { background:#ffa500; }
+  .evidence-card.sev-info::before { background:var(--cyan); }
+  .evidence-head { display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; margin-bottom:0.75rem; flex-wrap:wrap; }
+  .evidence-title { font-family:'Orbitron',monospace; font-size:0.86rem; color:#fff; font-weight:700; }
+  .evidence-sev { font-size:0.6rem; letter-spacing:1.5px; padding:3px 8px; white-space:nowrap; text-transform:uppercase; }
+  .sev-high .evidence-sev { border:1px solid rgba(255,51,85,0.5); color:var(--red); }
+  .sev-med .evidence-sev { border:1px solid rgba(255,165,0,0.5); color:#ffa500; }
+  .sev-info .evidence-sev { border:1px solid rgba(160,200,255,0.5); color:var(--cyan); }
+  .evidence-desc { font-size:0.77rem; color:var(--text-muted); line-height:1.7; margin-bottom:1rem; }
+  .evidence-stats { display:flex; gap:1.25rem; margin-bottom:1rem; flex-wrap:wrap; }
+  .evidence-stat-num { font-family:'Orbitron',monospace; font-size:1.1rem; color:var(--green); font-weight:900; }
+  .evidence-stat-lbl { font-size:0.6rem; color:rgba(255,255,255,0.45); letter-spacing:1px; text-transform:uppercase; }
+  .terminal-block {
+    background:#000a16; border:1px solid var(--border);
+    padding:0.85rem 1rem; font-size:0.7rem; line-height:1.6;
+    overflow-x:auto; white-space:pre; color:rgba(255,255,255,0.75);
+  }
+  .terminal-block .tcmd { color:var(--green); }
+  .terminal-block .tcmd::before { content:'$ '; color:rgba(255,255,255,0.3); }
+  .terminal-block .thl { color:var(--red); }
+  .terminal-block .tcy { color:var(--cyan); }
+
   /* ── Certifications ── */
   .cert-list { display:flex; flex-direction:column; gap:0.85rem; }
   .cert-item {
@@ -356,6 +394,7 @@
     <a href="#about">About</a>
     <a href="#skills">Skills</a>
     <a href="#projects">Projects</a>
+    <a href="#forensics">Forensics</a>
     <a href="#certs">Certs</a>
     <a href="#exp">Experience</a>
     <a href="#contact">Contact</a>
@@ -415,7 +454,7 @@
         </div>
         <div class="stat-grid">
           <div class="stat-card"><div class="stat-num">95%+</div><div class="stat-lbl">Phishing Model Accuracy</div></div>
-          <div class="stat-card"><div class="stat-num">4+</div><div class="stat-lbl">Certifications</div></div>
+          <div class="stat-card"><div class="stat-num">7+</div><div class="stat-lbl">Certifications</div></div>
           <div class="stat-card"><div class="stat-num">10+</div><div class="stat-lbl">Security Tools</div></div>
           <div class="stat-card"><div class="stat-num">2025</div><div class="stat-lbl">B.Tech Graduate</div></div>
         </div>
@@ -534,6 +573,89 @@
     </div>
   </section>
 
+  <!-- ── FORENSICS ── -->
+  <section class="section" id="forensics">
+    <div class="container">
+      <div class="section-label">Packet Forensics</div>
+      <div class="section-title">Captured in the Wild (My Lab)</div>
+      <p class="forensics-intro">
+        Full-duplex capture from my isolated VirtualBox NAT lab (Kali, Metasploitable2, Windows 10, Parrot OS) —
+        analyzed end-to-end with <strong>tshark</strong>. Every finding below is traced directly from raw packets,
+        not screenshots of a tool's summary tab.
+      </p>
+      <div class="forensics-meta">
+        <div class="forensics-meta-item"><b>746,802</b>Packets Captured</div>
+        <div class="forensics-meta-item"><b>20 min</b>Capture Duration</div>
+        <div class="forensics-meta-item"><b>164 MB</b>File Size (pcapng)</div>
+        <div class="forensics-meta-item"><b>4</b>Distinct Attack/Artifact Classes</div>
+      </div>
+
+      <div class="evidence-grid">
+
+        <div class="evidence-card sev-high">
+          <div class="evidence-head">
+            <div class="evidence-title">ARP Cache Poisoning — MITM</div>
+            <div class="evidence-sev">High</div>
+          </div>
+          <p class="evidence-desc">169 forged ARP replies sent from the attacker's MAC, claiming ownership of the gateway IP (10.0.2.1), poisoning the Windows victim's (10.0.2.15) ARP cache to redirect all outbound traffic through the attacker host.</p>
+          <div class="evidence-stats">
+            <div><div class="evidence-stat-num">169</div><div class="evidence-stat-lbl">Spoofed Replies</div></div>
+            <div><div class="evidence-stat-num">1</div><div class="evidence-stat-lbl">Victim Targeted</div></div>
+          </div>
+          <div class="terminal-block"><span class="tcmd">tshark -r capture.pcapng -Y arp -T fields -e arp.opcode -e arp.src.hw_mac -e arp.src.proto_ipv4 -e arp.dst.proto_ipv4</span>
+  2   08:00:27:30:10:97   <span class="thl">10.0.2.1</span>   10.0.2.15   <span class="tcy"># attacker MAC claiming gateway IP → victim</span>
+  (x169 replies over capture window)</div>
+        </div>
+
+        <div class="evidence-card sev-high">
+          <div class="evidence-head">
+            <div class="evidence-title">SYN Flood — DoS Exhaustion</div>
+            <div class="evidence-sev">High</div>
+          </div>
+          <p class="evidence-desc">628,404 SYN packets fired at Metasploitable2 port 80 from sequential ephemeral source ports, arriving roughly every 50µs. Only ~2% completed a full handshake — a textbook half-open connection / resource-exhaustion DoS.</p>
+          <div class="evidence-stats">
+            <div><div class="evidence-stat-num">628,404</div><div class="evidence-stat-lbl">SYN Packets</div></div>
+            <div><div class="evidence-stat-num">~2%</div><div class="evidence-stat-lbl">Handshakes Completed</div></div>
+          </div>
+          <div class="terminal-block"><span class="tcmd">tshark -r capture.pcapng -Y "ip.addr==10.0.2.3 and ip.addr==10.0.2.5 and tcp.port==80" -T fields -e tcp.flags</span>
+  <span class="thl">0x0002</span>  628404   <span class="tcy"># SYN only</span>
+  0x0012   13091   <span class="tcy"># SYN-ACK</span>
+  0x0010     574   <span class="tcy"># ACK (handshake completed)</span></div>
+        </div>
+
+        <div class="evidence-card sev-med">
+          <div class="evidence-head">
+            <div class="evidence-title">Plaintext Credential Capture</div>
+            <div class="evidence-sev">Medium</div>
+          </div>
+          <p class="evidence-desc">DVWA login POST intercepted over unencrypted HTTP. Form body decoded directly from the TCP payload — no TLS, no obfuscation, credentials sitting in the clear for anyone on-path.</p>
+          <div class="evidence-stats">
+            <div><div class="evidence-stat-num">100%</div><div class="evidence-stat-lbl">Cleartext</div></div>
+            <div><div class="evidence-stat-num">2</div><div class="evidence-stat-lbl">POSTs Captured</div></div>
+          </div>
+          <div class="terminal-block"><span class="tcmd">tshark -r capture.pcapng -Y "http.request.method==POST and ip.dst==10.0.2.5" -T fields -e http.file_data</span>
+  hex: 757365726e616d653d61646d696e26706173 ...
+  decoded → <span class="thl">username=admin&password=password&Login=Login</span></div>
+        </div>
+
+        <div class="evidence-card sev-info">
+          <div class="evidence-head">
+            <div class="evidence-title">Splunk Forwarder Pipeline — Live</div>
+            <div class="evidence-sev">Info</div>
+          </div>
+          <p class="evidence-desc">Forwarded log traffic on port 9997 from the Windows VM to the Kali-hosted Splunk indexer, confirming the Universal Forwarder pipeline (Security/Sysmon/PowerShell event channels) was actively streaming during the capture window.</p>
+          <div class="evidence-stats">
+            <div><div class="evidence-stat-num">9997</div><div class="evidence-stat-lbl">Forwarder Port</div></div>
+            <div><div class="evidence-stat-num">Live</div><div class="evidence-stat-lbl">Pipeline Status</div></div>
+          </div>
+          <div class="terminal-block"><span class="tcmd">tshark -r capture.pcapng -Y "tcp.port==9997" -T fields -e ip.src -e ip.dst -e tcp.port</span>
+  10.0.2.15   10.0.2.3   <span class="tcy">9997 → Windows VM forwarding to Splunk indexer</span></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
   <!-- ── CERTIFICATIONS ── -->
   <section class="section" id="certs">
     <div class="container">
@@ -558,6 +680,21 @@
         <div class="cert-item">
           <div class="cert-icon">CC</div>
           <div><div class="cert-name">Cloud Computing</div><div class="cert-issuer">NPTEL</div></div>
+          <div class="cert-status status-done">COMPLETED</div>
+        </div>
+        <div class="cert-item">
+          <div class="cert-icon">MC</div>
+          <div><div class="cert-name">Cybersecurity Virtual Experience Program</div><div class="cert-issuer">MASTERCARD (FORAGE)</div></div>
+          <div class="cert-status status-done">COMPLETED</div>
+        </div>
+        <div class="cert-item">
+          <div class="cert-icon">DL</div>
+          <div><div class="cert-name">Cyber Job Simulation</div><div class="cert-issuer">DELOITTE (FORAGE)</div></div>
+          <div class="cert-status status-done">COMPLETED</div>
+        </div>
+        <div class="cert-item">
+          <div class="cert-icon">TC</div>
+          <div><div class="cert-name">Cybersecurity Analyst Job Simulation</div><div class="cert-issuer">TATA (FORAGE)</div></div>
           <div class="cert-status status-done">COMPLETED</div>
         </div>
       </div>
